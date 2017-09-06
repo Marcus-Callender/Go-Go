@@ -20,6 +20,12 @@ public class Players : MonoBehaviour
 
     public Stone[][] m_stoneSortedArray;
 
+    public double[] m_playerScores = new double[2];
+
+    public double m_komi = 6.5;
+
+    public Text[] m_playerScoreObjects;
+
     void Start()
     {
         m_camera = GetComponent<Camera>();
@@ -34,6 +40,11 @@ public class Players : MonoBehaviour
             m_text.text = ("Player " + (m_player2 ? 2 : 1));
             m_text.color = m_player2 ? m_player2Colour : m_player1Colour;
         }
+
+        m_playerScores[0] = 0.0;
+        m_playerScores[1] = m_komi;
+
+        UpdatePlayerScores();
     }
 
     void Update()
@@ -68,25 +79,48 @@ public class Players : MonoBehaviour
 
                 if (data)
                 {
-                    if (data.ClickStone(mouseDown, m_player2 ? 1 : 0, m_player2 ? m_player2Colour : m_player1Colour))
+                    if (mouseDown == 0)
                     {
-                        Debug.Log("Cicked");
-                        m_player2 = !m_player2;
-
-                        if (m_text)
+                        if (data.ClaimStone(m_player2 ? 1 : 0, m_player2 ? m_player2Colour : m_player1Colour))
                         {
-                            m_text.text = ("Player " + (m_player2 ? 2 : 1));
-                            m_text.color = m_player2 ? m_player2Colour : m_player1Colour;
+                            m_player2 = !m_player2;
+                            
+                            if (m_text)
+                            {
+                                m_text.text = ("Player " + (m_player2 ? 2 : 1));
+                                m_text.color = m_player2 ? m_player2Colour : m_player1Colour;
+                            }
                         }
                     }
-                    else
+                    else if (mouseDown == 1)
                     {
-                        Debug.Log("Click Failed");
+                        if (data.RemoveStone())
+                        {
+                            // gives the point to the player who just had there turn as they need to remove pieces after they play
+                            m_playerScores[m_player2 ? 0 : 1] += 1.0;
+
+                            UpdatePlayerScores();
+                        }
                     }
                 }
 
                 break;
             }
+        }
+    }
+
+    private void UpdatePlayerScores()
+    {
+        if (m_playerScoreObjects[0])
+        {
+            m_playerScoreObjects[0].color = m_player1Colour;
+            m_playerScoreObjects[0].text = "P1: " + m_playerScores[0];
+        }
+
+        if (m_playerScoreObjects[1])
+        {
+            m_playerScoreObjects[1].color = m_player2Colour;
+            m_playerScoreObjects[1].text = "P2: " + m_playerScores[1];
         }
     }
 }
