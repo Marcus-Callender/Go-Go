@@ -2,15 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public class Players : MonoBehaviour
 {
     public bool m_player2 = false;
 
     public Camera m_camera;
 
+    public Text m_text;
+
+    public GameObject m_stones;
+
+    public Stone[] m_stoneList;
+
+    public Stone[][] m_stoneSortedArray;
+
     void Start()
     {
         m_camera = GetComponent<Camera>();
+
+        if (m_stones)
+        {
+            m_stoneList = m_stones.GetComponentsInChildren<Stone>();
+        }
+
+        
     }
 
     void Update()
@@ -18,10 +35,19 @@ public class Players : MonoBehaviour
         Vector3 _mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
         Debug.DrawRay(_mousePos, Vector3.forward * 15.0f, Color.green);
         
-        //int mouseDown = Input.GetMouseButtonDown(0) ? (Input.GetMouseButtonDown(1) ? -1 : 1) : 0;
         int mouseDown = Input.GetMouseButtonDown(0) ? 0 : (Input.GetMouseButtonDown(1) ? 1 : -1);
 
         Debug.Log("Mouse: " + mouseDown);
+
+        if (Input.GetButtonDown("Debug Switch Players"))
+        {
+            m_player2 = !m_player2;
+
+            if (m_text)
+            {
+                m_text.text = ("Player " + (m_player2 ? 2 : 1));
+            }
+        }
 
         if (mouseDown > -1)
         {
@@ -39,6 +65,11 @@ public class Players : MonoBehaviour
                     {
                         Debug.Log("Cicked");
                         m_player2 = !m_player2;
+
+                        if (m_text)
+                        {
+                            m_text.text = ("Player " + (m_player2 ? 2 : 1));
+                        }
                     }
                     else
                     {

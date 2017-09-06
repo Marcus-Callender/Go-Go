@@ -6,10 +6,12 @@ public class Stone : MonoBehaviour
 {
     Renderer m_mat;
 
+    public bool m_claimed = false;
+    public int m_player = -1;
+
     void Start()
     {
         m_mat = GetComponent<Renderer>();
-        
     }
     
     void Update()
@@ -19,13 +21,16 @@ public class Stone : MonoBehaviour
 
     public bool ClickStone(int mouseButton, int player)
     {
-        Debug.Log("Ply: " + player);
+        Debug.Log("Play: " + player);
 
-        if (mouseButton == 0)
+        if (mouseButton == 0 && !m_claimed)
         {
             if (player == 0)
             {
                 m_mat.material.color = new Color(1.0f, 0.92f, 0.016f, 1.0f);
+
+                m_claimed = true;
+                m_player = player;
 
                 Debug.Log("Yellow");
 
@@ -35,16 +40,20 @@ public class Stone : MonoBehaviour
             {
                 m_mat.material.color = new Color(1.0f, 0.0f, 1.0f, 1.0f);
 
+                m_claimed = true;
+                m_player = player;
+
                 Debug.Log("Purple");
 
                 return true;
             }
         }
-        else if (mouseButton == 1)
+        else if (mouseButton == 1 && m_claimed)
         {
             m_mat.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
-            return true;
+            m_claimed = false;
+            m_player = -1;
         }
 
         return false;
