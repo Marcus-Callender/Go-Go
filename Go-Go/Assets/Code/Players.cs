@@ -9,8 +9,10 @@ public class Players : MonoBehaviour
     public bool m_player2 = false;
 
     public Camera m_camera;
-
     public Text m_text;
+
+    public Color m_player1Colour;
+    public Color m_player2Colour;
 
     public GameObject m_stones;
 
@@ -27,7 +29,11 @@ public class Players : MonoBehaviour
             m_stoneList = m_stones.GetComponentsInChildren<Stone>();
         }
 
-        
+        if (m_text)
+        {
+            m_text.text = ("Player " + (m_player2 ? 2 : 1));
+            m_text.color = m_player2 ? m_player2Colour : m_player1Colour;
+        }
     }
 
     void Update()
@@ -46,6 +52,7 @@ public class Players : MonoBehaviour
             if (m_text)
             {
                 m_text.text = ("Player " + (m_player2 ? 2 : 1));
+                m_text.color = m_player2 ? m_player2Colour : m_player1Colour;
             }
         }
 
@@ -61,7 +68,7 @@ public class Players : MonoBehaviour
 
                 if (data)
                 {
-                    if (data.ClickStone(mouseDown, m_player2 ? 1 : 0))
+                    if (data.ClickStone(mouseDown, m_player2 ? 1 : 0, m_player2 ? m_player2Colour : m_player1Colour))
                     {
                         Debug.Log("Cicked");
                         m_player2 = !m_player2;
@@ -69,6 +76,7 @@ public class Players : MonoBehaviour
                         if (m_text)
                         {
                             m_text.text = ("Player " + (m_player2 ? 2 : 1));
+                            m_text.color = m_player2 ? m_player2Colour : m_player1Colour;
                         }
                     }
                     else

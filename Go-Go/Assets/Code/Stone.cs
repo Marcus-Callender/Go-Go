@@ -58,4 +58,29 @@ public class Stone : MonoBehaviour
 
         return false;
     }
+
+    public bool ClickStone(int mouseButton, int player, Color newColour)
+    {
+        Debug.Log("Play: " + player);
+
+        if (mouseButton == 0 && !m_claimed)
+        {
+            m_mat.material.color = newColour;
+
+            m_claimed = true;
+            m_player = player;
+
+            return true;
+            
+        }
+        else if (mouseButton == 1 && m_claimed)
+        {
+            m_mat.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+
+            m_claimed = false;
+            m_player = -1;
+        }
+
+        return false;
+    }
 }
