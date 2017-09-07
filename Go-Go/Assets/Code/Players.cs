@@ -107,6 +107,33 @@ public class Players : MonoBehaviour
                 break;
             }
         }
+        else
+        {
+            foreach (Stone currSt in m_stoneList)
+            {
+                currSt.RemoveMouseOver();
+            }
+
+            Vector3 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
+
+            RaycastHit[] hit = Physics.RaycastAll(mousePos, Vector3.forward * 15.0f);
+
+            foreach (RaycastHit oneHit in hit)
+            {
+                Stone data = oneHit.transform.gameObject.GetComponent<Stone>();
+
+                if (data)
+                {
+                    Color hilightColour = m_player2 ? m_player2Colour : m_player1Colour;
+
+                    hilightColour.a *= 0.3f;
+
+                    data.MouseOver(hilightColour);
+                }
+
+                break;
+            }
+        }
     }
 
     private void UpdatePlayerScores()

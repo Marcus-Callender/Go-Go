@@ -88,4 +88,26 @@ public class Stone : MonoBehaviour
 
         return false;
     }
+
+    public void MouseOver(Color newColour)
+    {
+        if (!m_claimed)
+        {
+            m_mat.material.color = newColour;
+        }
+    }
+
+    public void RemoveMouseOver()
+    {
+        if (!m_claimed)
+        {
+            //m_mat.material.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            
+            Color hilightColour = m_mat.material.color;
+
+            hilightColour.a *= 0.5f;
+
+            m_mat.material.color = hilightColour;
+        }
+    }
 }
